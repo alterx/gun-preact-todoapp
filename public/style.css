@@ -1,0 +1,57 @@
+.todoapp h2 {
+  position: relative;
+  width: 100%;
+  font-size: 32px;
+  font-weight: 200;
+  text-align: center;
+  color: #b83f45;
+  margin: 0;
+  padding: 20px 0;
+  -webkit-text-rendering: optimizeLegibility;
+  -moz-text-rendering: optimizeLegibility;
+  text-rendering: optimizeLegibility;
+}
+
+button.back {
+  padding: 20px;
+}
+.todoapp h2 {
+  position: relative;
+  width: 100%;
+  font-size: 24px;
+  font-weight: 200;
+  text-align: center;
+  color: #b83f45;
+  margin: 0;
+  padding: 20px 0;
+  -webkit-text-rendering: optimizeLegibility;
+  -moz-text-rendering: optimizeLegibility;
+  text-rendering: optimizeLegibility;
+}
+
+button.back {
+  padding: 20px;
+  cursor: pointer;
+}
+
+button.new-list {
+  cursor: pointer;
+  position: relative;
+  width: calc(100% - 60px);
+  font-size: 32px;
+  font-weight: 200;
+  text-align: center;
+  color: #b83f45;
+  margin: 0;
+  padding: 20px 0;
+  -webkit-text-rendering: optimizeLegibility;
+  -moz-text-rendering: optimizeLegibility;
+  text-rendering: optimizeLegibility;
+  border-bottom: 1px solid;
+  margin: 0 30px;
+}
+
+small {
+  color: #a6a6a6;
+  font-size: 12px;
+}
