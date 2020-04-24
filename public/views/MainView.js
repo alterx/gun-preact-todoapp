@@ -8,7 +8,7 @@ import { TodoList } from "../components/TodoList.js";
 import { Footer } from "../components/Footer.js";
 
 export const MainView = ({ appKeys, user, SEA }) => {
-  const [{ name }, { get, put }] = useGunState(
+  const [{ name }, { get, put, unsubscribe: uName }] = useGunState(
     "todoapp",
     ["name"],
     user,
@@ -17,13 +17,19 @@ export const MainView = ({ appKeys, user, SEA }) => {
   );
   const [
     { todos = {} },
-    { getSet, addToSet, updateInSet, removeFromSet },
+    { getSet, addToSet, updateInSet, removeFromSet, unsubscribe: uTodos },
   ] = useGunCollectionState("todoapp", ["todos"], user, appKeys, SEA);
   const [nowShowing, setNowShowing] = useState(() => "all");
 
   useEffect(() => {
     getSet("todos");
     get("name");
+
+    return () => {
+      // this function will be executed (by (P)react) when it's time to clean up
+      uTodos();
+      uName();
+    };
   }, []);
 
   const changeStatus = async (todo) => {

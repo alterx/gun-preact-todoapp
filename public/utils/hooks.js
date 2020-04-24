@@ -111,9 +111,11 @@ export const useGunState = (
     gunAppGraph.get(name).put(null);
   };
 
+  const unsubscribe = () => gunAppGraph.off();
+
   return [
     rootFields,
-    { get, put, remove },
+    { get, put, remove, unsubscribe },
     gunAppGraph, // the actual graph is sent in case something advanced needs to be done
   ];
 };
@@ -181,9 +183,11 @@ export const useGunCollectionState = (
     setCollections({ ...collections });
   };
 
+  const unsubscribe = () => gunAppGraph.off();
+
   return [
     collections,
-    { getSet, addToSet, updateInSet, removeFromSet },
+    { getSet, addToSet, updateInSet, removeFromSet, unsubscribe },
     gunAppGraph, // the actual graph is sent in case something advanced needs to be done
   ];
 };
