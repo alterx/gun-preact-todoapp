@@ -1,4 +1,4 @@
-import { useState } from '//unpkg.com/htm/preact/standalone.mjs';
+import { useState, useEffect } from "//unpkg.com/htm/preact/standalone.mjs";
 
 const encryptData = async (data, encrypted, keys, SEA) => {
   return encrypted ? SEA.encrypt(data, keys) : Promise.resolve(data);
@@ -32,10 +32,33 @@ export const useGun = (Gun, peerList) => {
   const [gun] = useState(
     Gun({
       peers: peerList,
-    }),
+    })
   );
 
   return [gun, sea];
+};
+
+export const useNamespacedGun = (gun) => {
+  const [namespace, setNamespace] = useState(null);
+  setNamespace(gun.user());
+  return [namespace];
+};
+
+export const useGunKeys = (sea, retrieveFn = () => null) => {
+  const [keys, setKeys] = useState(retrieveFn);
+
+  useEffect(() => {
+    async function getKeySet() {
+      const pair = await sea.pair();
+      setKeys(pair);
+    }
+
+    if (!keys) {
+      getKeySet();
+    }
+  }, [sea, keys]);
+
+  return [keys, setKeys];
 };
 
 export const useGunState = (
@@ -45,7 +68,7 @@ export const useGunState = (
   appKeys,
   SEA,
   interval = 100,
-  encrypted = true,
+  encrypted = true
 ) => {
   const [gunAppGraph] = useState(user.get(namespace));
   const [listenerSet, setListenerSet] = useState({});
@@ -69,7 +92,7 @@ export const useGunState = (
         encryptedField,
         encrypted,
         appKeys,
-        SEA,
+        SEA
       );
       updater({ id: name, data: decryptedField });
     });
@@ -102,7 +125,7 @@ export const useGunCollectionState = (
   appKeys,
   SEA,
   interval = 100,
-  encrypted = true,
+  encrypted = true
 ) => {
   const [gunAppGraph] = useState(user.get(namespace));
   const [listenerSet, setListenerSet] = useState({});

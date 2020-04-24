@@ -7,9 +7,7 @@ import { useGunState, useGunCollectionState } from "../utils/hooks.js";
 import { TodoList } from "../components/TodoList.js";
 import { Footer } from "../components/Footer.js";
 
-export const MainView = ({ appKeys, user, appReady, SEA }) => {
-  if (!appReady) return null;
-
+export const MainView = ({ appKeys, user, SEA }) => {
   const [{ name }, { get, put }] = useGunState(
     "todoapp",
     ["name"],
