@@ -1,4 +1,4 @@
-import { useState, useEffect } from "//unpkg.com/htm/preact/standalone.mjs";
+import { useState } from "//unpkg.com/htm/preact/standalone.mjs";
 
 const encryptData = async (data, encrypted, keys, SEA) => {
   return encrypted ? SEA.encrypt(data, keys) : Promise.resolve(data);
@@ -38,25 +38,37 @@ export const useGun = (Gun, peerList) => {
   return [gun, sea];
 };
 
-export const useNamespacedGun = (gun) => {
+export const useGunNamespace = (gun) => {
   const [namespace, setNamespace] = useState(null);
   setNamespace(gun.user());
   return [namespace];
 };
 
+export const useGunKeyAuth = (gun, keys, triggerAuth) => {
+  // Will attempt to perform a login (when triggerAuth is set to true),
+  // or, if false, returns a namespaced gun node
+  const [namespacedGraph] = useGunNamespace(gun);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  if (namespacedGraph && !namespacedGraph.is && keys && triggerAuth) {
+    namespacedGraph.auth(keys);
+    setIsLoggedIn(true);
+  }
+
+  return [namespacedGraph, isLoggedIn];
+};
+
 export const useGunKeys = (sea, retrieveFn = () => null) => {
   const [keys, setKeys] = useState(retrieveFn);
 
-  useEffect(() => {
-    async function getKeySet() {
-      const pair = await sea.pair();
-      setKeys(pair);
-    }
+  async function getKeySet() {
+    const pair = await sea.pair();
+    setKeys(pair);
+  }
 
-    if (!keys) {
-      getKeySet();
-    }
-  }, [sea, keys]);
+  if (!keys) {
+    getKeySet();
+  }
 
   return [keys, setKeys];
 };
